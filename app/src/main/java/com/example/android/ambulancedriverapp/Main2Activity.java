@@ -10,6 +10,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -69,6 +70,7 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference("Emergencies");
     DatabaseReference locRef = database.getReference("Emergencies");
+    public static final int perm=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +110,11 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
             startActivity(onGPS);
         }
 
+        if (ContextCompat.checkSelfPermission(Main2Activity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(Main2Activity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, perm );
+
+        }
 
         EmergencyDetails emg =new EmergencyDetails(SI,TI,username,NO);
         myRef.child(username).child("emergencyDetails").setValue(emg);
@@ -156,6 +163,26 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
 
 
 
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case perm: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    finish();
+                    startActivity(getIntent());
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
     }
 
     public void setMap(Location location){
@@ -300,6 +327,7 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
 
 
 }
+
     private String getDirectionsUrl(LatLng origin,LatLng dest){
 
         // Origin of route
