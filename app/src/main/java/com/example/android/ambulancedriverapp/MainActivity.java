@@ -7,7 +7,9 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -92,7 +94,17 @@ public class MainActivity extends AppCompatActivity {
         if(!u.equals("")) {
             Toast.makeText(MainActivity.this, username, Toast.LENGTH_SHORT).show();
         }
-        setContentView(R.layout.activity_main);
+
+
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        WindowManager wm = (WindowManager) getApplicationContext().getSystemService(Context.WINDOW_SERVICE); // the results will be higher than using the activity context object or the getWindowManager() shortcut
+        wm.getDefaultDisplay().getMetrics(displayMetrics);
+        int screen = displayMetrics.widthPixels*displayMetrics.heightPixels;
+        if(screen>920000)
+            setContentView(R.layout.activity_main);
+        else
+            setContentView(R.layout.activity_mainsmall);
 //        s1 = (SeekBar)findViewById(R.id.seekBar);
           t1 = (TextView)findViewById(R.id.edit2);
           t1.setText(String.valueOf(" "));
