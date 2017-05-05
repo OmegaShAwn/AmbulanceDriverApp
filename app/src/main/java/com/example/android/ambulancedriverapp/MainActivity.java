@@ -15,6 +15,12 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -34,7 +40,8 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton bg6;
     private Button b1,b2,b3,b4,b5,b6,b7;
 
-
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference ref = database.getReference("UserCategories/AmbulanceDrivers");
 
 
     @Override
@@ -47,21 +54,43 @@ public class MainActivity extends AppCompatActivity {
         String u=settings.getString("lusername","");
         final String username;
 
-        if(hasLoggedIn)
+        if(!hasLoggedIn)
         {
-        }
-        else{
             Intent intent=new Intent(MainActivity.this,LoginActivity.class);
             startActivity(intent);
         }
 
         if(!isNetworkAvailable())
-            Toast.makeText(getApplicationContext(), "NO INTERNET CONNECTION", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "NO INTERNET CONNECTION", Toast.LENGTH_SHORT).show();
 
         username=settings.getString("lusername","");
 
+
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(!dataSnapshot.hasChild(username)){
+                    Intent intent=new Intent(getApplicationContext(),LoginActivity.class);
+                    Toast.makeText(getApplicationContext(),"Logged Out",Toast.LENGTH_SHORT).show();
+                    startActivity(intent);
+                    finish();
+                    SharedPreferences settings = getSharedPreferences(MainActivity.PREFS_NAME, 0); // 0 - for private mode
+                    SharedPreferences.Editor editor = settings.edit();
+
+                    editor.putBoolean("hasLoggedIn",false);
+                    editor.putString("lusername","");
+                    editor.commit();
+                }
+
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
         if(!u.equals("")) {
-            Toast.makeText(MainActivity.this, username, Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.this, username, Toast.LENGTH_SHORT).show();
         }
         setContentView(R.layout.activity_main);
 //        s1 = (SeekBar)findViewById(R.id.seekBar);
@@ -268,7 +297,7 @@ public class MainActivity extends AppCompatActivity {
 
                 t1.setText(String.valueOf(progress/25+1));
                 S=progress/25+1;
-                //Toast.makeText(getApplicationContext(), String.valueOf(progress),Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), String.valueOf(progress),Toast.LENGTH_SHORT).show();
 
             }
         });*/
@@ -298,7 +327,7 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed()
     {
         if(k==0) {
-            Toast.makeText(getApplicationContext(), "Press Back again to log out", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Press Back again to log out", Toast.LENGTH_SHORT).show();
             k++;
         }
         else{
@@ -310,7 +339,7 @@ public class MainActivity extends AppCompatActivity {
             editor.putBoolean("hasLoggedIn",false);
             editor.putString("lusername","");
             editor.commit();
-            Toast.makeText(getApplicationContext(),"Logged Out",Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),"Logged Out",Toast.LENGTH_SHORT).show();
         Intent i = new Intent(getApplicationContext(), LoginActivity.class);
         startActivity(i);
 
