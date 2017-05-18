@@ -318,15 +318,18 @@ public class MainActivity extends AppCompatActivity {
 
         btn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
-                Bundle extras = getIntent().getExtras();
-                Intent i = new Intent(getApplicationContext(), Main2Activity.class);
-                i.putExtra("SI",String.valueOf(S));
-                i.putExtra("TI",String.valueOf(T));
-                i.putExtra("NO",String.valueOf(N));
-                i.putExtra("username",username);
-                startActivity(i);
-           // startActivity(new Intent(MainActivity.this, Main2Activity.class));
+                if(!isNetworkAvailable())
+                    Toast.makeText(getApplicationContext(), "NO INTERNET CONNECTION", Toast.LENGTH_SHORT).show();
+                else {
+                    Bundle extras = getIntent().getExtras();
+                    Intent i = new Intent(getApplicationContext(), Main2Activity.class);
+                    i.putExtra("SI", String.valueOf(S));
+                    i.putExtra("TI", String.valueOf(T));
+                    i.putExtra("NO", String.valueOf(N));
+                    i.putExtra("username", username);
+                    startActivity(i);
+                    // startActivity(new Intent(MainActivity.this, Main2Activity.class));
+                }
             }
         });
 
