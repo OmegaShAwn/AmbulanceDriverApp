@@ -266,11 +266,11 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
         public void onLocationChanged(Location location){
             LocationDetails loc = new LocationDetails(location.getLatitude(),location.getLongitude());
             locRef.child(username).child("locationDetails").setValue(loc);
-            if(distance!=null) {
+            /*if(distance!=null) {
                 locRef.child(username).child("locationDetails").child("time").setValue(h*100+m);
             }
             else
-                locRef.child(username).child("locationDetails").child("time").setValue("null");
+                locRef.child(username).child("locationDetails").child("time").setValue("null");*/
             Log.i(LOG_TAG,location.toString());
 //            txtOutput.setText("Latitude"+Double.toString(location.getLatitude())+"\nLongitude"+Double.toString(location.getLongitude()));
             if(googleMap!=null)
@@ -437,14 +437,14 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
                 String parts[] = s.split(",");
                 String parts2[] = parts[13].split(":");
                 distance = parts2[2];
-                if(Character.isDigit(distance.charAt(2)))
+                /*if(Character.isDigit(distance.charAt(2)))
                     h=Integer.parseInt(distance.substring(1,3));
                 else
                     h=Integer.parseInt(distance.substring(1,2));
                 if(Character.isDigit(distance.charAt(9)))
                     m=Integer.parseInt(distance.substring(8,10));
                 else
-                    m=Integer.parseInt(distance.substring(8,9));
+                    m=Integer.parseInt(distance.substring(8,9));*/
 
                 Log.v("distance",distance);
 
