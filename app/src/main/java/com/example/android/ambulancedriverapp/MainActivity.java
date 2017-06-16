@@ -100,11 +100,9 @@ public class MainActivity extends AppCompatActivity {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         WindowManager wm = (WindowManager) getApplicationContext().getSystemService(Context.WINDOW_SERVICE); // the results will be higher than using the activity context object or the getWindowManager() shortcut
         wm.getDefaultDisplay().getMetrics(displayMetrics);
-        int screen = displayMetrics.widthPixels*displayMetrics.heightPixels;
-        if(screen>920000)
-            setContentView(R.layout.activity_main);
-        else
-            setContentView(R.layout.activity_mainsmall);
+
+        setContentView(R.layout.activity_main);
+
 //        s1 = (SeekBar)findViewById(R.id.seekBar);
           t1 = (TextView)findViewById(R.id.edit2);
           t1.setText(String.valueOf(" "));
