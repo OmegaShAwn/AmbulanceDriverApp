@@ -131,7 +131,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_marginRight="10dp"
-                android:background="@color/colorred"
+                android:background="@android:color/holo_red_light"
                 android:text="high"
                 app:layout_constraintLeft_toLeftOf="@+id/med"
                 app:layout_constraintRight_toRightOf="@+id/med"

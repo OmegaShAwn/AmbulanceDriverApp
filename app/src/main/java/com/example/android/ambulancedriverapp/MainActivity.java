@@ -3,6 +3,7 @@ package com.example.android.ambulancedriverapp;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -215,6 +216,9 @@ public class MainActivity extends AppCompatActivity {
                                   public void onClick(View arg0) {
                                       check = true;
                                       t1.setText(String.valueOf("Low"));
+                                      b3.setBackgroundColor(Color.parseColor("#ffff4444"));
+                                      b2.setBackgroundColor(Color.parseColor("#ffffbb33"));
+                                      b1.setBackgroundColor(Color.parseColor("#228B22"));
                                       S = 1;
                                   }
                               });
@@ -226,6 +230,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View arg0) {
                 check = true;
                 t1.setText(String.valueOf("Medium"));
+                b2.setBackgroundColor(Color.parseColor("#ffff8800"));
+                b1.setBackgroundColor(Color.parseColor("#ff99cc00"));
+                b3.setBackgroundColor(Color.parseColor("#ffff4444"));
                 S = 2;
             }
         });
@@ -237,6 +244,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View arg0) {
                 check = true;
                 t1.setText(String.valueOf("High"));
+                b3.setBackgroundColor(Color.parseColor("#ffcc0000"));
+                b2.setBackgroundColor(Color.parseColor("#ffffbb33"));
+                b1.setBackgroundColor(Color.parseColor("#ff99cc00"));
                 S = 3;
             }
         });
@@ -250,6 +260,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View arg0) {
                 check = true;
                 t2.setText(String.valueOf("1"));
+                b4.setBackgroundResource(R.drawable.my_button_bg2);
+                b5.setBackgroundResource(R.drawable.my_button_bg);
+                b6.setBackgroundResource(R.drawable.my_button_bg);
+                b7.setBackgroundResource(R.drawable.my_button_bg);
                 N = 1;
             }
         });
@@ -261,6 +275,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View arg0) {
                 check = true;
                 t2.setText(String.valueOf("2"));
+                b4.setBackgroundResource(R.drawable.my_button_bg);
+                b5.setBackgroundResource(R.drawable.my_button_bg2);
+                b6.setBackgroundResource(R.drawable.my_button_bg);
+                b7.setBackgroundResource(R.drawable.my_button_bg);
                 N = 2;
             }
         });
@@ -272,6 +290,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View arg0) {
                 check = true;
                 t2.setText(String.valueOf("3"));
+                b4.setBackgroundResource(R.drawable.my_button_bg);
+                b5.setBackgroundResource(R.drawable.my_button_bg);
+                b6.setBackgroundResource(R.drawable.my_button_bg2);
+                b7.setBackgroundResource(R.drawable.my_button_bg);
                 N = 3;
             }
         });
@@ -283,6 +305,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View arg0) {
                 check = true;
                 t2.setText(String.valueOf("4"));
+                b4.setBackgroundResource(R.drawable.my_button_bg);
+                b5.setBackgroundResource(R.drawable.my_button_bg);
+                b6.setBackgroundResource(R.drawable.my_button_bg);
+                b7.setBackgroundResource(R.drawable.my_button_bg2);
                 N = 4;
             }
         });
