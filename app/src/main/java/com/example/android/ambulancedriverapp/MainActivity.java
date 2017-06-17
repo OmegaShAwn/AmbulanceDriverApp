@@ -353,8 +353,9 @@ public class MainActivity extends AppCompatActivity {
             editor.putString("lusername","");
             editor.commit();
             Toast.makeText(getApplicationContext(),"Logged Out",Toast.LENGTH_SHORT).show();
-        Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-        startActivity(i);
+            Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(i);
+            finish();
 
         // code here to show dialog
         super.onBackPressed();  // optional depending on your needs
