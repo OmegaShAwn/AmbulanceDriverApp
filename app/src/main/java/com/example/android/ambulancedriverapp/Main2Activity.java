@@ -285,9 +285,10 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
 
                 googleMap.addMarker(new MarkerOptions()
                         .position(coordinate));
-//               if(firstTime==0){firstTime++;
-                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(coordinate,17.0f);
-                googleMap.moveCamera(cameraUpdate);
+
+            float f=googleMap.getCameraPosition().zoom;
+            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(coordinate, f);
+            googleMap.moveCamera(cameraUpdate);
 
         }
 
