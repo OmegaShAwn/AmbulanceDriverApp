@@ -279,15 +279,15 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
 
                     setMap(location);
                 }
-               /* MapsInitializer.initialize(Main2Activity.this);
+                MapsInitializer.initialize(Main2Activity.this);
 
                 LatLng coordinate = new LatLng(location.getLatitude(),location.getLongitude());
 
                 googleMap.addMarker(new MarkerOptions()
                         .position(coordinate));
-               if(firstTime==0){firstTime++;
+//               if(firstTime==0){firstTime++;
                 CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(coordinate,17.0f);
-                googleMap.moveCamera(cameraUpdate);}*/
+                googleMap.moveCamera(cameraUpdate);
 
         }
 
@@ -457,6 +457,7 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
             MarkerOptions markerOptions = new MarkerOptions();
 
             // Traversing through all the routes
+            if(result!=null)
             for(int i=0;i<result.size();i++){
                 points = new ArrayList<LatLng>();
                 lineOptions = new PolylineOptions();
@@ -482,6 +483,7 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
             }
 
             // Drawing polyline in the Google Map for the i-th route
+            if(lineOptions!=null)
             googleMap.addPolyline(lineOptions);
 
 //            distanceTextView.setText("Estimated Time Taken:"+distance);
