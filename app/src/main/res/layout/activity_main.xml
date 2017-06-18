@@ -130,7 +130,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_marginRight="10dp"
                 android:background="@android:color/holo_red_light"
                 android:text="high"
                 app:layout_constraintLeft_toLeftOf="@+id/med"
@@ -231,7 +230,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_marginRight="10dp"
                 android:background="@drawable/my_button_bg"
                 android:text="4"
                 app:layout_constraintLeft_toLeftOf="@+id/three"
@@ -317,19 +315,6 @@
             android:orientation="horizontal">
 
             <ImageButton
-                android:id="@+id/others"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginRight="10dp"
-                android:adjustViewBounds="true"
-                android:background="@drawable/my_button_bg"
-                app:srcCompat="@drawable/other"
-                tools:layout_constraintLeft_creator="1"
-                tools:layout_constraintRight_creator="1"
-                tools:layout_constraintTop_creator="1" />
-
-            <ImageButton
                 android:id="@+id/accident"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -346,10 +331,23 @@
                 android:id="@+id/headinjury"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
                 android:background="@drawable/my_button_bg"
                 app:srcCompat="@drawable/headin"
+                tools:layout_constraintLeft_creator="1"
+                tools:layout_constraintRight_creator="1"
+                tools:layout_constraintTop_creator="1" />
+
+            <ImageButton
+                android:id="@+id/others"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:background="@drawable/my_button_bg"
+                app:srcCompat="@drawable/other"
                 tools:layout_constraintLeft_creator="1"
                 tools:layout_constraintRight_creator="1"
                 tools:layout_constraintTop_creator="1" />
