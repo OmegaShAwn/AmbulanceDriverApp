@@ -281,6 +281,7 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
             String url = getDirectionsUrl(coordinate, destination);
 
             DownloadTask downloadTask = new DownloadTask();
+            googleMap.getUiSettings().setScrollGesturesEnabled(false);
 
             // Start downloading json data from Google Directions API
             downloadTask.execute(url);
