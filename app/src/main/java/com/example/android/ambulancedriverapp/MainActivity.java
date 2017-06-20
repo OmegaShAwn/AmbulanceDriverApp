@@ -1,12 +1,14 @@
 package com.example.android.ambulancedriverapp;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -23,9 +25,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -360,38 +359,34 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    int k=0;
-
     @Override
     public void onBackPressed()
     {
-        if(k==0) {
-            Toast.makeText(getApplicationContext(), "Press Back again to log out", Toast.LENGTH_SHORT).show();
-            k++;
-        }
-        else{
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Do you want to log out?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
 
 
-            SharedPreferences settings = getSharedPreferences(MainActivity.PREFS_NAME, 0); // 0 - for private mode
-            SharedPreferences.Editor editor = settings.edit();
+                        Toast.makeText(getApplicationContext(), "Logged Out", Toast.LENGTH_SHORT).show();
+                        Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                        SharedPreferences settings = getSharedPreferences(MainActivity.PREFS_NAME, 0); // 0 - for private mode
+                        SharedPreferences.Editor editor = settings.edit();
 
-            editor.putBoolean("hasLoggedIn",false);
-            editor.putString("lusername","");
-            editor.commit();
-            Toast.makeText(getApplicationContext(),"Logged Out",Toast.LENGTH_SHORT).show();
-            Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-            startActivity(i);
-            finish();
+                        editor.putBoolean("hasLoggedIn", false);
+                        editor.putString("lusername","");
 
-        // code here to show dialog
-        super.onBackPressed();  // optional depending on your needs
-    }
-        new Timer().schedule(new TimerTask() {
-            @Override
-            public void run() {
-                k=0;
-            }
-        }, 2000);
+                        editor.commit();
+                        startActivity(i);
+
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+                    }
+                });
+        builder.show();
 
     }
     private boolean isNetworkAvailable() {
