@@ -58,6 +58,7 @@
             android:layout_weight="0.05"
             android:orientation="horizontal">
 
+
             <TextView
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
@@ -372,6 +373,8 @@
                 tools:layout_constraintLeft_creator="1"
                 tools:layout_constraintRight_creator="1"
                 tools:layout_constraintTop_creator="1" />
+
+
         </LinearLayout>
 
     </LinearLayout>
