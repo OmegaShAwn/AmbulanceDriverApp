@@ -4,6 +4,10 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
@@ -30,6 +34,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
@@ -47,10 +52,11 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
-public class Main2Activity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener ,OnMapReadyCallback{
+public class Main2Activity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener ,OnMapReadyCallback, SensorEventListener {
 
     MapView mapView;
     GoogleMap googleMap;
@@ -65,12 +71,84 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
     String NO;
     Marker marker;
     String distance=null;
+    TextView distanceTextView;
     int h,m;
     LatLng destination = new LatLng(10.0876,76.3882);
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference("Emergencies");
     DatabaseReference locRef = database.getReference("Emergencies");
+    DatabaseReference logRef = database.getReference("Log/Ambulance");
     public static final int perm=0;
+
+
+
+
+
+
+
+
+
+
+
+    public static float swRoll;
+    public static float swPitch;
+    public float swAzimuth = 400;
+    public float swAzimuthp = 300;
+
+
+    public static SensorManager mSensorManager;
+    public static Sensor accelerometer;
+    public static Sensor magnetometer;
+
+    public static float[] mAccelerometer = null;
+    public static float[] mGeomagnetic = null;
+
+    Location loca=null;
+
+
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        // onSensorChanged gets called for each sensor so we have to remember the values
+        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+            mAccelerometer = event.values;
+        }
+
+        if (event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
+            mGeomagnetic = event.values;
+        }
+
+        if (mAccelerometer != null && mGeomagnetic != null) {
+            float R[] = new float[9];
+            float I[] = new float[9];
+            boolean success = SensorManager.getRotationMatrix(R, I, mAccelerometer, mGeomagnetic);
+
+            if (success && loca != null) {
+                float orientation[] = new float[3];
+                SensorManager.getOrientation(R, orientation);
+                // at this point, orientation contains the azimuth(direction), pitch and roll values.
+                double azimuth = 180 * orientation[0] / Math.PI;
+                swAzimuth = (float)azimuth;
+                if((swAzimuthp-swAzimuth>10 || swAzimuthp-swAzimuth<-10)) {
+                    swAzimuthp = swAzimuth;
+                    double pitch = 180 * orientation[1] / Math.PI;
+                    double roll = 180 * orientation[2] / Math.PI;
+
+                    float bear = swAzimuth;
+                    float zo = googleMap.getCameraPosition().zoom;
+                    LatLng coordinate = new LatLng(loca.getLatitude(), loca.getLongitude());
+                    CameraPosition currentPlace = new CameraPosition.Builder()
+                            .target(coordinate)
+                            .bearing(bear).tilt(65.5f).zoom(zo).build();
+                    googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(currentPlace));
+                }
+            }
+        }
+    }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,20 +159,26 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
         setContentView(R.layout.activity_main2);
 
 
+        mSensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
+        accelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        magnetometer = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+
+
+
 //        TextView S = (TextView) findViewById(R.id.sever);
 //        TextView T = (TextView) findViewById(R.id.type);
 //        TextView N = (TextView) findViewById(R.id.num);
         Button B = (Button) findViewById(R.id.buttonstop);
+        distanceTextView = (TextView)findViewById(R.id.textView3);
         Bundle extras = getIntent().getExtras();
         SI = extras.getString("SI");
         TI = extras.getString("TI");
         NO = extras.getString("NO");
         firstTime=0;
-         username= extras.getString("username");
-//        N.setText(NO);
+        Calendar c= Calendar.getInstance();
 
-//        S.setText(SI);
-//        T.setText(TI);
+        username= extras.getString("username");
+        logRef=logRef.child(username).child(String.valueOf(c.get(Calendar.YEAR))).child(String.valueOf(c.get(Calendar.MONTH))).child(String.valueOf(c.get(Calendar.DATE))).child(String.valueOf(c.get(Calendar.HOUR_OF_DAY))).child(String.valueOf(c.get(Calendar.MINUTE)));
 
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
@@ -111,6 +195,7 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
 
         EmergencyDetails emg =new EmergencyDetails(SI,TI,username,NO);
         myRef.child(username).child("emergencyDetails").setValue(emg);
+        logRef.child("emergencyDetails").setValue(emg);
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(LocationServices.API)
@@ -132,6 +217,9 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
 //               LocationDetails k= new LocationDetails(1.0,1.0);
 //                locRef.child(username).child("locationDetails").setValue(k);
                 myRef.child(username).removeValue();
+                Calendar st = Calendar.getInstance();
+                timeEnded tE = new timeEnded(String.valueOf(st.get(Calendar.YEAR)),String.valueOf(st.get(Calendar.MONTH)),String.valueOf(st.get(Calendar.DAY_OF_MONTH)),String.valueOf(st.get(Calendar.HOUR_OF_DAY)),String.valueOf(st.get(Calendar.MINUTE)));
+                logRef.child("TimeEnded").setValue(tE);
                 intentCreateAccount.putExtra("username",username);
                 startActivity(intentCreateAccount);
                 finish();
@@ -185,10 +273,11 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
 
             LatLng coordinate = new LatLng(location.getLatitude(),location.getLongitude());
             googleMap.addMarker(new MarkerOptions().position(coordinate));
-            if(firstTime==0){firstTime++;
-                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(coordinate,17.0f);
-                googleMap.moveCamera(cameraUpdate);}
-
+            if(firstTime == 0) {
+                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(coordinate, 17.0f);
+                googleMap.moveCamera(cameraUpdate);
+                firstTime++;
+            }
             String url = getDirectionsUrl(coordinate, destination);
 
             DownloadTask downloadTask = new DownloadTask();
@@ -262,10 +351,17 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
             Log.i(LOG_TAG,"Google api connection has been failed");
         }
 
+        int once=0;
         @Override
         public void onLocationChanged(Location location){
+            loca=location;
             LocationDetails loc = new LocationDetails(location.getLatitude(),location.getLongitude());
             locRef.child(username).child("locationDetails").setValue(loc);
+            if(once==0) {
+                logRef.child("Location").setValue(loc);
+                once++;
+            }
+
             /*if(distance!=null) {
                 locRef.child(username).child("locationDetails").child("time").setValue(h*100+m);
             }
@@ -286,15 +382,11 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
                 googleMap.addMarker(new MarkerOptions()
                         .position(coordinate));
 
-            float f;
-            if(firstTime != 0)
-                f=googleMap.getCameraPosition().zoom;
-            else {
-                f = 17.0f;
+            if(firstTime == 0) {
+                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(coordinate, 17.0f);
+                googleMap.moveCamera(cameraUpdate);
                 firstTime++;
             }
-            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(coordinate, f);
-            googleMap.moveCamera(cameraUpdate);
         }
 
     @Override
@@ -310,11 +402,15 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
         mapView.onResume();
         EmergencyDetails emg =new EmergencyDetails(SI,TI,username,NO);
         myRef.child(username).child("emergencyDetails").setValue(emg);
+        mSensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_GAME);
+        mSensorManager.registerListener(this, magnetometer, SensorManager.SENSOR_DELAY_GAME);
         super.onResume();
     }
     @Override
     public void onPause() {
         myRef.child(username).removeValue();
+        mSensorManager.unregisterListener(this, accelerometer);
+        mSensorManager.unregisterListener(this, magnetometer);
         super.onPause();
         mapView.onPause();
     }
@@ -490,9 +586,10 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
 
             // Drawing polyline in the Google Map for the i-th route
             if(lineOptions!=null)
-            googleMap.addPolyline(lineOptions);
+                googleMap.addPolyline(lineOptions);
+            if(distance!=null)
+                distanceTextView.setText("Estimated Time Taken :" + distance.substring(1, distance.length() - 1));
 
-//            distanceTextView.setText("Estimated Time Taken:"+distance);
 
         }
     }
