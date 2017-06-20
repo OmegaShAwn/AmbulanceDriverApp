@@ -131,7 +131,7 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
                 // at this point, orientation contains the azimuth(direction), pitch and roll values.
                 double azimuth = 180 * orientation[0] / Math.PI;
                 swAzimuth = (float)azimuth;
-                if((swAzimuthp-swAzimuth>10 || swAzimuthp-swAzimuth<-10)) {
+                if((swAzimuthp-swAzimuth>7 || swAzimuthp-swAzimuth<-7)) {
                     swAzimuthp = swAzimuth;
                     double pitch = 180 * orientation[1] / Math.PI;
                     double roll = 180 * orientation[2] / Math.PI;
