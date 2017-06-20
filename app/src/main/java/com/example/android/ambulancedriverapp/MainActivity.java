@@ -379,6 +379,8 @@ public class MainActivity extends AppCompatActivity {
                         editor.commit();
                         startActivity(i);
 
+                        finish();
+
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
