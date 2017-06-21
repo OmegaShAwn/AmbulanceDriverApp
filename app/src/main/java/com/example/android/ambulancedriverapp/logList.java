@@ -20,7 +20,6 @@ import java.util.ArrayList;
 
 public class logList extends AppCompatActivity {
 
-    int i;
     String username;
     ArrayList<String> emerlist = new ArrayList<String>();
 
