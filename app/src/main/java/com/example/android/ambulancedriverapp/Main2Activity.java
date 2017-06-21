@@ -280,8 +280,22 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
                 tE.setnumber(Integer.valueOf(emg.no));
                 tE.setseverity(Integer.valueOf(emg.si));
                 tE.settype(Integer.valueOf(emg.ti));
-                tE.setlatitude(logloc.getLatitude());
-                tE.setlongitude(logloc.getLongitude());
+                if(loc!=null) {
+                    tE.setlatitudee(loc.getLatitude());
+                    tE.setlongitudee(loc.getLongitude());
+                }
+                else{
+                    tE.setlatitudee(0.0);
+                    tE.setlongitudee(0.0);
+                }
+                if(logloc!=null) {
+                    tE.setlatitude(logloc.getLatitude());
+                    tE.setlongitude(logloc.getLongitude());
+                }
+                else{
+                    tE.setlatitude(0.0);
+                    tE.setlongitude(0.0);
+                }
                 logRef.setValue(tE);
                 intentCreateAccount.putExtra("username",username);
                 startActivity(intentCreateAccount);
@@ -423,11 +437,12 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
         }
 
         public LocationDetails logloc;
+        public LocationDetails loc;
         int once=0;
         @Override
         public void onLocationChanged(Location location){
             loca=location;
-            LocationDetails loc = new LocationDetails(location.getLatitude(),location.getLongitude());
+            loc = new LocationDetails(location.getLatitude(),location.getLongitude());
             locRef.child(username).child("locationDetails").setValue(loc);
             if(once==0) {
                 logloc=new LocationDetails(location.getLatitude(),location.getLongitude());

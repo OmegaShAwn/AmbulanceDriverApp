@@ -73,6 +73,10 @@ public class details extends AppCompatActivity {
                         no.setText("Number: "+tE.no);
                         i.putExtra("lat",tE.lat);
                         i.putExtra("lon",tE.lon);
+                        i.putExtra("late",tE.late);
+                        i.putExtra("lone",tE.lone);
+                        i.putExtra("stime","Starting Time: "+tE.hours+":"+tE.minutes);
+                        i.putExtra("etime","Ending Time: "+tE.hour+":"+tE.minute);
                     }
                 }
             }

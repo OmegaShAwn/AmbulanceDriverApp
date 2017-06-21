@@ -7,7 +7,7 @@ package com.example.android.ambulancedriverapp;
 public class timeEnded {
 
     public int year,month,date,hour,minute,years,months,dates,hours,minutes,si,no,ti;
-    public double lat,lon;
+    public double lat,lon,late,lone;
 
     public void setyear(int year){
         this.year=year;
@@ -53,5 +53,11 @@ public class timeEnded {
     }
     public void setlongitude(Double lon){
         this.lon=lon;
+    }
+    public void setlatitudee(Double late){
+        this.late=late;
+    }
+    public void setlongitudee(Double lone){
+        this.lone=lone;
     }
 }
