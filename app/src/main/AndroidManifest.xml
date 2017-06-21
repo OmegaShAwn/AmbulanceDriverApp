@@ -46,7 +46,8 @@
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity android:name=".logList" />
-        <activity android:name=".details"></activity>
+        <activity android:name=".details" />
+        <activity android:name=".location"></activity>
     </application>
 
 </manifest>

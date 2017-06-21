@@ -6,7 +6,9 @@ package com.example.android.ambulancedriverapp;
 
 public class timeEnded {
 
-    public int year,month,date,hour,minute;
+    public int year,month,date,hour,minute,years,months,dates,hours,minutes,si,no,ti;
+    public double lat,lon;
+
     public void setyear(int year){
         this.year=year;
     }
@@ -22,19 +24,34 @@ public class timeEnded {
     public void setminute(int minute){
         this.minute=minute;
     }
-    public int getyear(){
-        return year;
+    public void setyears(int years){
+        this.years=years;
     }
-    public int getmonth(){
-        return month;
+    public void setmonths(int months){
+        this.months=months;
     }
-    public int getdate(){
-        return date;
+    public void setdates(int dates){
+        this.dates=dates;
     }
-    public int gethour(){
-        return hour;
+    public void sethours(int hours){
+        this.hours=hours;
     }
-    public int getminute(){
-        return minute;
+    public void setminutes(int minutes){
+        this.minutes=minutes;
+    }
+    public void setseverity(int si){
+        this.si=si;
+    }
+    public void settype(int ti){
+        this.ti=ti;
+    }
+    public void setnumber(int no){
+        this.no=no;
+    }
+    public void setlatitude(Double lat){
+        this.lat=lat;
+    }
+    public void setlongitude(Double lon){
+        this.lon=lon;
     }
 }

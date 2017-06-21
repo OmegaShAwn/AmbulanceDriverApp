@@ -44,10 +44,8 @@ public class logList extends AppCompatActivity {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
                 no++;
-                timeEnded tE;
-                tE = dataSnapshot.child("Time/start").getValue(timeEnded.class);
-                emerlist.add(Integer.toString(tE.date)+" | "+ Integer.toString(tE.month)+" | "+ Integer.toString(tE.year)+" || "+ Integer.toString(tE.hour)+" : "+ Integer.toString(tE.minute));
-//                emerlist.add(username);
+                timeEnded tE = dataSnapshot.getValue(timeEnded.class);
+                emerlist.add(Integer.toString(tE.dates)+" | "+ Integer.toString(tE.months)+" | "+ Integer.toString(tE.years)+" || "+ Integer.toString(tE.hours)+" : "+ Integer.toString(tE.minutes));
                 adapter.notifyDataSetChanged();
             }
 
@@ -69,9 +67,8 @@ public class logList extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getApplicationContext(), details.class);
                 intent.putExtra("username",username);
-                intent.putExtra("no", position);
+                intent.putExtra("no", position+1);
                 startActivity(intent);
-                finish();
 
 //                mEmergenciesAdapter.remove(mEmergenciesAdapter);
 
