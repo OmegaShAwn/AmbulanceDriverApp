@@ -29,6 +29,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+
 public class MainActivity extends AppCompatActivity {
 
     public static final String PREFS_NAME = "MyPrefsFile";
@@ -61,7 +62,8 @@ public class MainActivity extends AppCompatActivity {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.log_option:
-                startActivity(new Intent(getApplicationContext(),logList.class));
+                Intent i= new Intent(getApplicationContext(),logList.class);
+                startActivity(i);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

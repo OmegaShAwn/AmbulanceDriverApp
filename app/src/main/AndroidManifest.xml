@@ -45,7 +45,8 @@
             android:name=".Main2Activity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
-        <activity android:name=".logList"></activity>
+        <activity android:name=".logList" />
+        <activity android:name=".details"></activity>
     </application>
 
 </manifest>

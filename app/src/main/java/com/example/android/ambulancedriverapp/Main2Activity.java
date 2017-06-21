@@ -17,8 +17,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -42,6 +40,9 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -176,11 +177,10 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
         TI = extras.getString("TI");
         NO = extras.getString("NO");
         firstTime=0;
-        Calendar c= Calendar.getInstance();
+        final Calendar c= Calendar.getInstance();
 
         username= extras.getString("username");
-        logRef=logRef.child(username).child(String.valueOf(c.get(Calendar.YEAR))).child(String.valueOf(c.get(Calendar.MONTH))).child(String.valueOf(c.get(Calendar.DATE))).child(String.valueOf(c.get(Calendar.HOUR_OF_DAY))).child(String.valueOf(c.get(Calendar.MINUTE)));
-
+        logRef=logRef.child(username);
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
@@ -194,9 +194,8 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
 
         }
 
-        EmergencyDetails emg =new EmergencyDetails(SI,TI,username,NO);
+        final EmergencyDetails emg =new EmergencyDetails(SI,TI,username,NO);
         myRef.child(username).child("emergencyDetails").setValue(emg);
-        logRef.child("emergencyDetails").setValue(emg);
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(LocationServices.API)
@@ -206,21 +205,54 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
 
 //        txtOutput = (TextView) findViewById(R.id.txtoutput);
 
-
         mapView = (MapView) findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
+        mapView.getMapAsync(this);
 
-            mapView.getMapAsync(this);
+
+
+        logRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
+                inc();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String prevChildKey) {}
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {}
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String prevChildKey) {}
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
+
+
         B.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intentCreateAccount = new Intent(Main2Activity.this, MainActivity.class);
-//               LocationDetails k= new LocationDetails(1.0,1.0);
-//                locRef.child(username).child("locationDetails").setValue(k);
                 myRef.child(username).removeValue();
+                logRef=logRef.child(Integer.toString(count+1));
                 Calendar st = Calendar.getInstance();
-                timeEnded tE = new timeEnded(String.valueOf(st.get(Calendar.YEAR)),String.valueOf(st.get(Calendar.MONTH)),String.valueOf(st.get(Calendar.DAY_OF_MONTH)),String.valueOf(st.get(Calendar.HOUR_OF_DAY)),String.valueOf(st.get(Calendar.MINUTE)));
-                logRef.child("TimeEnded").setValue(tE);
+                timeEnded tE=new timeEnded();
+                tE.setyear(c.get(Calendar.YEAR));
+                tE.setmonth(c.get(Calendar.MONTH));
+                tE.setdate(c.get(Calendar.DAY_OF_MONTH));
+                tE.sethour(c.get(Calendar.HOUR_OF_DAY));
+                tE.setminute(c.get(Calendar.MINUTE));
+                logRef.child("Time/start").setValue(tE);
+                tE.setyear(st.get(Calendar.YEAR));
+                tE.setmonth(st.get(Calendar.MONTH));
+                tE.setdate(st.get(Calendar.DAY_OF_MONTH));
+                tE.sethour(st.get(Calendar.HOUR_OF_DAY));
+                tE.setminute(st.get(Calendar.MINUTE));
+                logRef.child("Time/end").setValue(tE);
+                logRef.child("emergencyDetails").setValue(emg);
+                logRef.child("Location").setValue(logloc);
                 intentCreateAccount.putExtra("username",username);
                 startActivity(intentCreateAccount);
                 finish();
@@ -247,6 +279,11 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
 
     }
 
+    public int count=0;
+
+    public void inc(){
+        count++;
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
@@ -353,6 +390,7 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
             Log.i(LOG_TAG,"Google api connection has been failed");
         }
 
+        public LocationDetails logloc;
         int once=0;
         @Override
         public void onLocationChanged(Location location){
@@ -360,7 +398,7 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
             LocationDetails loc = new LocationDetails(location.getLatitude(),location.getLongitude());
             locRef.child(username).child("locationDetails").setValue(loc);
             if(once==0) {
-                logRef.child("Location").setValue(loc);
+                logloc=new LocationDetails(location.getLatitude(),location.getLongitude());
                 once++;
             }
 
