@@ -64,7 +64,6 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
     MapView mapView;
     GoogleMap googleMap;
     private final String LOG_TAG = "roshantest";
-    private TextView txtOutput;
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
     int firstTime;
@@ -215,6 +214,35 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
                 inc();
+                if(count>49){
+                    final DatabaseReference exceed = database.getReference("Log/Ambulance/"+username);
+                    dec();
+
+                    exceed.addChildEventListener(new ChildEventListener() {
+
+                        int c=0;
+                        @Override
+                        public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
+                            c++;
+                            if (c != 1) {
+                                timeEnded tE = dataSnapshot.getValue(timeEnded.class);
+                                exceed.child(Integer.toString(c-1)).setValue(tE);
+                            }
+                        }
+
+                        @Override
+                        public void onChildChanged(DataSnapshot dataSnapshot, String prevChildKey) {}
+
+                        @Override
+                        public void onChildRemoved(DataSnapshot dataSnapshot) {}
+
+                        @Override
+                        public void onChildMoved(DataSnapshot dataSnapshot, String prevChildKey) {}
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {}
+                    });
+                }
             }
 
             @Override
@@ -287,6 +315,10 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
         count++;
     }
 
+    public void dec() {
+        count--;
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
@@ -336,8 +368,6 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
         googleMap=map;
         Log.v("main","googlemap set");
         map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-
-
         map.getUiSettings().setZoomControlsEnabled(true);
 
 
