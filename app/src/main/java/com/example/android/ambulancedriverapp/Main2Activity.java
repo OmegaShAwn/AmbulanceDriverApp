@@ -1,6 +1,7 @@
 package com.example.android.ambulancedriverapp;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -15,7 +16,6 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -59,7 +59,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
-public class Main2Activity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener ,OnMapReadyCallback, SensorEventListener {
+public class Main2Activity extends Activity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener ,OnMapReadyCallback, SensorEventListener {
 
     MapView mapView;
     GoogleMap googleMap;
@@ -368,6 +368,7 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
 
             DownloadTask downloadTask = new DownloadTask();
             googleMap.getUiSettings().setScrollGesturesEnabled(false);
+            googleMap.getUiSettings().setCompassEnabled(false);
 
             // Start downloading json data from Google Directions API
             downloadTask.execute(url);
@@ -397,7 +398,6 @@ public class Main2Activity extends AppCompatActivity implements GoogleApiClient.
     @Override
     protected void onStop() {
         myRef.child(username).removeValue();
-//
         mGoogleApiClient.disconnect();
         super.onStop();
 

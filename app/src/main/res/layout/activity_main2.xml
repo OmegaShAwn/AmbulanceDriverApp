@@ -15,27 +15,33 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <TextView
-        android:id="@+id/textView3"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:textAlignment="center"
-        android:textColor="@color/colorred"
-        android:textSize="20sp"
-        android:visibility="visible" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/buttonstop"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:background="@color/black_overlay"
-        android:text="stop"
-        android:textColor="@color/colorred" />
+        <Button
+            android:id="@+id/buttonstop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentStart="true"
+            android:background="@color/black_overlay"
+            android:text="stop"
+            android:textColor="@color/colorred" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:textAlignment="center"
+            android:textColor="@color/colorred"
+            android:textSize="20sp"
+            android:visibility="visible" />
+    </LinearLayout>
 
 
 </RelativeLayout>
