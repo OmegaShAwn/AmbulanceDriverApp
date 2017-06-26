@@ -65,7 +65,7 @@ public class Main2Activity extends Activity implements GoogleApiClient.Connectio
     GoogleMap googleMap;
     private final String LOG_TAG = "roshantest";
     private GoogleApiClient mGoogleApiClient;
-    private LocationRequest mLocationRequest;
+    LocationRequest mLocationRequest;
     int firstTime;
     String username;
     String SI;
@@ -81,17 +81,6 @@ public class Main2Activity extends Activity implements GoogleApiClient.Connectio
     DatabaseReference locRef = database.getReference("Emergencies");
     DatabaseReference logRef = database.getReference("Log/Ambulance");
     public static final int perm=0;
-
-
-
-
-
-
-
-
-
-
-
     public static float swRoll;
     public static float swPitch;
     public float swAzimuth = 400;
