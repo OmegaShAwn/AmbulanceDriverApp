@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
         t2 = (TextView)findViewById(R.id.edit1);
         t2.setText(String.valueOf(" "));
 
-        bg1 = (ImageButton) findViewById(R.id.fire);
+        bg1 = (ImageButton) findViewById(R.id.neural);
 
         bg1.setOnClickListener(new View.OnClickListener() {
             @Override

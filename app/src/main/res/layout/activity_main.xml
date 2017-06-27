@@ -281,14 +281,14 @@
                 tools:layout_constraintTop_creator="1" />
 
             <ImageButton
-                android:id="@+id/fire"
+                android:id="@+id/neural"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
                 android:layout_marginRight="10dp"
                 android:background="@drawable/my_button_bg"
-                app:srcCompat="@drawable/fire"
+                app:srcCompat="@drawable/ic_brain"
                 tools:layout_constraintLeft_creator="1"
                 tools:layout_constraintRight_creator="1"
                 tools:layout_constraintTop_creator="1" />
@@ -329,7 +329,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Fire"
+                android:text="Neural"
                 android:textAlignment="center"
                 android:textColor="@color/colorblack" />
 
@@ -340,7 +340,7 @@
                 android:textColor="@color/colorblack"
                 android:textAlignment="center"
                 android:layout_weight="1"
-                android:text="Pregnency" />
+                android:text="Pregnancy" />
         </LinearLayout>
 
         <LinearLayout
