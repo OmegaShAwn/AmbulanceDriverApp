@@ -25,6 +25,7 @@ public class details extends AppCompatActivity {
         final TextView ti = (TextView)findViewById(R.id.Ti);
         final TextView start = (TextView)findViewById(R.id.Start);
         final TextView end = (TextView)findViewById(R.id.End);
+        final TextView dest = (TextView)findViewById(R.id.dest);
         final Button B = (Button)findViewById(R.id.Location);
 
         String username;
@@ -69,6 +70,8 @@ public class details extends AppCompatActivity {
                             t="Medium";
                         if(tE.si==3)
                             t="High";
+                        if(tE.dest==1)
+                            dest.setText("The patient was taken elsewhere due to high criticality.");
                         si.setText("Severity: "+t);
                         no.setText("Number: "+tE.no);
                         i.putExtra("lat",tE.lat);

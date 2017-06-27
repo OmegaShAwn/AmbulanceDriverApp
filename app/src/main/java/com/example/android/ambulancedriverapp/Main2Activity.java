@@ -94,8 +94,9 @@ public class Main2Activity extends Activity implements GoogleApiClient.Connectio
     public static float[] mAccelerometer = null;
     public static float[] mGeomagnetic = null;
 
-    Location loca=null;
+//    public Location loca = new Location("loca");
 
+    public Location loca = null;
 
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
     }
@@ -251,11 +252,11 @@ public class Main2Activity extends Activity implements GoogleApiClient.Connectio
         B.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentCreateAccount = new Intent(Main2Activity.this, MainActivity.class);
+                final Intent intentCreateAccount = new Intent(Main2Activity.this, MainActivity.class);
                 myRef.child(username).removeValue();
-                logRef=logRef.child(Integer.toString(count+1));
+                logRef = logRef.child(Integer.toString(count + 1));
                 Calendar st = Calendar.getInstance();
-                timeEnded tE=new timeEnded();
+                timeEnded tE = new timeEnded();
                 tE.setyears(c.get(Calendar.YEAR));
                 tE.setmonths(c.get(Calendar.MONTH));
                 tE.setdates(c.get(Calendar.DAY_OF_MONTH));
@@ -269,24 +270,34 @@ public class Main2Activity extends Activity implements GoogleApiClient.Connectio
                 tE.setnumber(Integer.valueOf(emg.no));
                 tE.setseverity(Integer.valueOf(emg.si));
                 tE.settype(Integer.valueOf(emg.ti));
-                if(loc!=null) {
+                if (loc != null) {
                     tE.setlatitudee(loc.getLatitude());
                     tE.setlongitudee(loc.getLongitude());
-                }
-                else{
+                } else {
                     tE.setlatitudee(0.0);
                     tE.setlongitudee(0.0);
                 }
-                if(logloc!=null) {
+                if (logloc != null) {
                     tE.setlatitude(logloc.getLatitude());
                     tE.setlongitude(logloc.getLongitude());
-                }
-                else{
+                } else {
                     tE.setlatitude(0.0);
                     tE.setlongitude(0.0);
                 }
+                Location endloc = new Location("endloc");
+                Location destloc = new Location("destloc");
+                endloc.setLatitude(loc.getLatitude());
+                endloc.setLongitude(loc.getLongitude());
+                destloc.setLatitude(10.0876);
+                destloc.setLongitude(76.3882);
+//                destloc.setLatitude(10.504032);
+//                destloc.setLongitude(76.234133);
+                if(destloc.distanceTo(endloc)>1000)
+                    tE.setdest(1);
+                else
+                    tE.setdest(0);
                 logRef.setValue(tE);
-                intentCreateAccount.putExtra("username",username);
+                intentCreateAccount.putExtra("username", username);
                 startActivity(intentCreateAccount);
                 finish();
             }});
@@ -312,6 +323,8 @@ public class Main2Activity extends Activity implements GoogleApiClient.Connectio
 
     }
 
+    public int p=0;
+
     public int count=0;
 
     public void inc(){
@@ -321,6 +334,8 @@ public class Main2Activity extends Activity implements GoogleApiClient.Connectio
     public void dec() {
         count--;
     }
+
+    public void incc(){p++;}
 
     @Override
     public void onRequestPermissionsResult(int requestCode,

@@ -20,7 +20,7 @@ public class EmergencyDetails {
             this.no=no;
         }
 
-        public void setSi(String si){this.si=si;    }
+        public void setSi(String si){this.si=si;}
         public void setTi(String ti){this.ti=ti;}
         public String getSi(){return si;}
         public void setNo(String no){this.no=no;}
