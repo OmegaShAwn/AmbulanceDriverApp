@@ -6,7 +6,7 @@ package com.example.android.ambulancedriverapp;
 
 public class timeEnded {
 
-    public int year,month,date,hour,minute,years,months,dates,hours,minutes,si,no,ti;
+    public int year,month,date,hour,minute,years,months,dates,hours,minutes,si,no,ti,db=1;
     public float dest;
     public double lat,lon,late,lone;
 
