@@ -18,8 +18,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,8 +31,7 @@ import com.google.firebase.database.ValueEventListener;
 public class MainActivity extends AppCompatActivity {
 
     public static final String PREFS_NAME = "MyPrefsFile";
-    private ImageView fire;
-    private SeekBar s1;
+//    private SeekBar s1;
     private TextView t1,t2;
     public int S,T,N;
     public boolean check = false;
@@ -105,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
 
                     editor.putBoolean("hasLoggedIn",false);
                     editor.putString("lusername","");
-                    editor.commit();
+                    editor.apply();
                 }
 
             }
@@ -368,7 +365,6 @@ public class MainActivity extends AppCompatActivity {
                 if(!isNetworkAvailable())
                     Toast.makeText(getApplicationContext(), "NO INTERNET CONNECTION", Toast.LENGTH_SHORT).show();
                 else {
-                    Bundle extras = getIntent().getExtras();
                     Intent i = new Intent(getApplicationContext(), Main2Activity.class);
                     i.putExtra("SI", String.valueOf(S));
                     i.putExtra("TI", String.valueOf(T));
@@ -400,7 +396,7 @@ public class MainActivity extends AppCompatActivity {
                         editor.putBoolean("hasLoggedIn", false);
                         editor.putString("lusername","");
 
-                        editor.commit();
+                        editor.apply();
                         startActivity(i);
 
                         finish();

@@ -401,7 +401,7 @@ public class Main2Activity extends Activity implements GoogleApiClient.Connectio
 
     @Override
     protected void onStop() {
-        myRef.child(username).removeValue();
+//        myRef.child(username).removeValue();
         mGoogleApiClient.disconnect();
         super.onStop();
 
@@ -447,6 +447,7 @@ public class Main2Activity extends Activity implements GoogleApiClient.Connectio
         public void onLocationChanged(Location location){
             loca=location;
             loc = new LocationDetails(location.getLatitude(),location.getLongitude());
+            loc.active = 1;
             locRef.child(username).child("locationDetails").setValue(loc);
             if(once==0) {
                 logloc=new LocationDetails(location.getLatitude(),location.getLongitude());
@@ -499,7 +500,7 @@ public class Main2Activity extends Activity implements GoogleApiClient.Connectio
     }
     @Override
     public void onPause() {
-        myRef.child(username).removeValue();
+//        myRef.child(username).removeValue();
         mSensorManager.unregisterListener(this, accelerometer);
         mSensorManager.unregisterListener(this, magnetometer);
         super.onPause();

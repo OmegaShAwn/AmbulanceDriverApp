@@ -1,13 +1,14 @@
 package com.example.android.ambulancedriverapp;
 
 /**
- * Created by RoshanJoy on 16-03-2017.
+  Created by RoshanJoy on 16-03-2017.
  */
 
 public class LocationDetails {
 
     Double latitude;
     Double longitude;
+    int active = 1;
 
     public LocationDetails(){}
 
